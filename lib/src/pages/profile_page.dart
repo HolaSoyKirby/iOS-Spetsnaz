@@ -8,45 +8,26 @@ class ProfilePage extends StatefulWidget {
 }
 
 class ProfilePageState extends State<ProfilePage> {
-  final _styles = {
-    'userView': {
-      'margin': const EdgeInsets.only(top: 30, bottom: 30),
-    },
-    'userImg': {'height': 200.00},
-    'userName': {'text': TextStyle(fontSize: 38, color: Colors.black)},
-    'exitButtonView': {
-      'margin':
-          const EdgeInsets.only(left: 30, right: 30, top: 250, bottom: 30),
-      'height': 60.00,
-      'backgroundColor':
-          MaterialStateProperty.all<Color>(Color.fromARGB(255, 222, 0, 16)),
-      'borderRadius': MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))
-    },
-    'exitText': {
-      'text': TextStyle(
-          fontSize: 22, color: Colors.white, fontFamily: 'sans-serif-medium')
-    }
-  };
-
   @override
   Widget build(BuildContext context) {
     return (Scaffold(
       body: Column(
         children: <Container>[
           Container(
-              margin: _styles['userView']['margin'],
+              margin: EdgeInsets.only(top: 30, bottom: 30),
               child: Column(children: <Widget>[
                 Image.asset(
                   'assets/user.png',
-                  height: _styles['userImg']['height'],
+                  height: 200,
                 ),
-                Text('John Doe', style: _styles['userName']['text']),
+                Text('John Doe',
+                    style: TextStyle(fontSize: 38, color: Colors.black)),
               ])),
           Container(),
           Container(
-              margin: _styles['exitButtonView']['margin'],
-              height: _styles['exitButtonView']['height'],
+              margin:
+                  EdgeInsets.only(left: 30, right: 30, top: 250, bottom: 30),
+              height: 60,
               child: SizedBox.expand(
                   child: ElevatedButton(
                       onPressed: () {
@@ -56,11 +37,18 @@ class ProfilePageState extends State<ProfilePage> {
                         }
                       },
                       style: ButtonStyle(
-                          backgroundColor: _styles['exitButtonView']
-                              ['backgroundColor'],
-                          shape: _styles['exitButtonView']['borderRadius']),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Color.fromARGB(255, 222, 0, 16)),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(10)))),
                       child: Text("Cerrar Sesión",
-                          style: _styles['exitText']['text']))))
+                          style: TextStyle(
+                              fontSize: 22,
+                              color: Colors.white,
+                              fontFamily: 'sans-serif-medium')))))
         ],
       ),
     ));

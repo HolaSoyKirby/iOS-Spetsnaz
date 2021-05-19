@@ -1,28 +1,56 @@
 import 'package:flutter/material.dart';
 
-class PlatillosPage extends StatelessWidget {
+class AlmacenPage extends StatelessWidget {
   Future<List> _getList() {
     return Future.value([
-      {'Nombre': 'Platillo 1'},
-      {'Nombre': 'Platillo 2'},
-      {'Nombre': 'Platillo 3'},
-      {'Nombre': 'Platillo 4'},
-      {'Nombre': 'Platillo 5'},
-      {'Nombre': 'Platillo 6'},
-      {'Nombre': 'Platillo 7'},
-      {'Nombre': 'Platillo 8'},
-      {'Nombre': 'Platillo 9'},
-      {'Nombre': 'Platillo 10'},
-      {'Nombre': 'Platillo 11'},
-      {'Nombre': 'Platillo 12'},
-      {'Nombre': 'Platillo 13'},
-      {'Nombre': 'Platillo 14'},
-      {'Nombre': 'Platillo 15'},
-      {'Nombre': 'Platillo 16'},
-      {'Nombre': 'Platillo 17'},
-      {'Nombre': 'Platillo 18'},
-      {'Nombre': 'Platillo 19'},
-      {'Nombre': 'Platillo 20'}
+      {
+        'Nombre': 'Ingrediente 1',
+        'Cantidad': '20 kg',
+      },
+      {
+        'Nombre': 'Ingrediente 2',
+        'Cantidad': '20 kg',
+      },
+      {
+        'Nombre': 'Ingrediente 3',
+        'Cantidad': '200 g',
+      },
+      {
+        'Nombre': 'Ingrediente 4',
+        'Cantidad': '20 kg',
+      },
+      {
+        'Nombre': 'Ingrediente 5',
+        'Cantidad': '20 kg',
+      },
+      {
+        'Nombre': 'Ingrediente 6',
+        'Cantidad': '200 g',
+      },
+      {
+        'Nombre': 'Ingrediente 7',
+        'Cantidad': '20 kg',
+      },
+      {
+        'Nombre': 'Ingrediente 8',
+        'Cantidad': '20 kg',
+      },
+      {
+        'Nombre': 'Ingrediente 9',
+        'Cantidad': '200 g',
+      },
+      {
+        'Nombre': 'Ingrediente 10',
+        'Cantidad': '20 kg',
+      },
+      {
+        'Nombre': 'Ingrediente 11',
+        'Cantidad': '20 kg',
+      },
+      {
+        'Nombre': 'Ingrediente 12',
+        'Cantidad': '200 g',
+      }
     ]);
   }
 
@@ -34,7 +62,7 @@ class PlatillosPage extends StatelessWidget {
               margin: EdgeInsets.only(left: 20, right: 20, top: 50, bottom: 15),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text('Platillos',
+                child: Text('Almacén',
                     style: TextStyle(
                         fontSize: 30,
                         fontFamily: 'sans-serif-medium',
@@ -52,7 +80,7 @@ class PlatillosPage extends StatelessWidget {
                   backgroundColor: Color.fromARGB(255, 222, 0, 16),
                   child: Icon(Icons.add, size: 30),
                   onPressed: () {
-                    Navigator.of(context).pushNamed('/agregarPlatPage');
+                    Navigator.of(context).pushNamed('/agregarIngPage');
                   }),
             ))));
   }
@@ -67,6 +95,7 @@ class PlatillosPage extends StatelessWidget {
         print(snapshot.data);
         return Expanded(
             child: Container(
+                margin: EdgeInsets.zero,
                 decoration: BoxDecoration(
                     border: Border(
                         top: BorderSide(
@@ -84,35 +113,33 @@ class PlatillosPage extends StatelessWidget {
 
     for (int i = 0; i < data.length; i++) {
       print(data[i]);
-      opciones.add(_cardt1(data[i], context));
+      opciones.add(_cardt1(data[i]));
     }
     return opciones;
   }
 
-  Widget _cardt1(var ingrediente, BuildContext context) {
+  Widget _cardt1(var ingrediente) {
     return Column(
       children: <Container>[
         Container(
             margin: EdgeInsets.zero,
             decoration: BoxDecoration(
                 border: Border(
-                    bottom: BorderSide(
+                    top: BorderSide(
                         width: 1.0, color: Color.fromARGB(255, 222, 0, 16)))),
-            child: ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        Color.fromARGB(255, 255, 255, 255))),
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/ingredientesPlatilloPage');
-                },
-                child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 20),
-                    child: ListTile(
-                      title: Text(
-                        ingrediente['Nombre'],
-                        style: TextStyle(fontSize: 30),
-                      ),
-                    ))))
+            child: ListTile(
+              title: Text(
+                ingrediente['Nombre'],
+                style: TextStyle(fontSize: 30),
+              ),
+            )),
+        Container(
+            margin: EdgeInsets.zero,
+            child: ListTile(
+                title: Text(
+              ingrediente['Cantidad'],
+              style: TextStyle(fontSize: 30),
+            )))
       ],
     );
   }

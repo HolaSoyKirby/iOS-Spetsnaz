@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../pages/platillos_page.dart';
+import '../pages/almacen_page.dart';
 import '../pages/profile_page.dart';
 
 class MenuDrawer extends StatefulWidget {
@@ -17,6 +18,8 @@ class MenuDrawerState extends State<MenuDrawer> {
       case 0:
         return PlatillosPage();
       case 1:
+        return AlmacenPage();
+      case 2:
         return ProfilePage();
     }
   }
@@ -48,9 +51,16 @@ class MenuDrawerState extends State<MenuDrawer> {
                 },
               ),
               ListTile(
-                title: Text('Item 2'),
+                title: Text('Almacén'),
                 onTap: () {
                   _onSelectItem(1);
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: Text('Usuario'),
+                onTap: () {
+                  _onSelectItem(2);
                   Navigator.pop(context);
                 },
               ),

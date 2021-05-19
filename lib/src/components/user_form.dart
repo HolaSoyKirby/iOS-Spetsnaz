@@ -26,7 +26,7 @@ class UserFormState extends State<UserForm> {
   };
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(context) {
     return Container(
         child: Align(
       alignment: _styles['formText']['alignment'],
