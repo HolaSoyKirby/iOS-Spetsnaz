@@ -8,6 +8,7 @@ import '../pages/agregar_ing_page.dart';
 import '../pages/almacen_page.dart';
 import '../pages/agregar_plat_page.dart';
 import '../pages/ingredientes_platillo_page.dart';
+import '../pages/agregar_cant_page.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -28,6 +29,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => AgregarPlatPage());
       case '/ingredientesPlatilloPage':
         return MaterialPageRoute(builder: (_) => IngredientesPlatilloPage());
+      case '/agregarCantPage':
+        return MaterialPageRoute(builder: (_) => AgregarCantPage());
       default:
         return MaterialPageRoute(builder: (_) => LoginPage());
     }

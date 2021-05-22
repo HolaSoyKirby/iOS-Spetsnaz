@@ -113,34 +113,42 @@ class AlmacenPage extends StatelessWidget {
 
     for (int i = 0; i < data.length; i++) {
       print(data[i]);
-      opciones.add(_cardt1(data[i]));
+      opciones.add(_cardt1(data[i], context));
     }
     return opciones;
   }
 
-  Widget _cardt1(var ingrediente) {
-    return Column(
-      children: <Container>[
-        Container(
-            margin: EdgeInsets.zero,
-            decoration: BoxDecoration(
-                border: Border(
-                    top: BorderSide(
-                        width: 1.0, color: Color.fromARGB(255, 222, 0, 16)))),
-            child: ListTile(
-              title: Text(
-                ingrediente['Nombre'],
-                style: TextStyle(fontSize: 30),
-              ),
-            )),
-        Container(
-            margin: EdgeInsets.zero,
-            child: ListTile(
-                title: Text(
-              ingrediente['Cantidad'],
-              style: TextStyle(fontSize: 30),
-            )))
-      ],
-    );
+  Widget _cardt1(var ingrediente, BuildContext context) {
+    return Container(
+        margin: EdgeInsets.zero,
+        decoration: BoxDecoration(
+            border: Border(
+                top: BorderSide(
+                    width: 1.0, color: Color.fromARGB(255, 222, 0, 16)))),
+        child: ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(
+                    Color.fromARGB(255, 255, 255, 255))),
+            onPressed: () {
+              Navigator.of(context).pushNamed('/agregarCantPage');
+            },
+            child: Column(
+              children: <Container>[
+                Container(
+                    child: ListTile(
+                  title: Text(
+                    ingrediente['Nombre'],
+                    style: TextStyle(fontSize: 30),
+                  ),
+                )),
+                Container(
+                    margin: EdgeInsets.zero,
+                    child: ListTile(
+                        title: Text(
+                      ingrediente['Cantidad'],
+                      style: TextStyle(fontSize: 30),
+                    )))
+              ],
+            )));
   }
 }

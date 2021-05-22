@@ -76,124 +76,117 @@ class AgregarPlatPageState extends State<AgregarPlatPage> {
 
   Widget build(context) {
     return Scaffold(
-      body: Column(
-        children: <Container>[
-          Container(
-              margin: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.06,
-                  left: 20,
-                  bottom: 10),
-              child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Agregar Platillo',
-                    style: TextStyle(
-                        fontSize: 30,
-                        fontFamily: 'sans-serif-medium',
-                        color: Color.fromARGB(255, 0, 0, 0)),
-                  ))),
-          Container(
-              margin: EdgeInsets.only(left: 15, right: 15, bottom: 5),
-              child: TextField(
-                  decoration:
-                      InputDecoration(hintText: 'Nombre del Platillo'))),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 15),
-            height: MediaQuery.of(context).size.height * 0.20,
-            child: _lista(),
-          ),
-
-          ////////// PICKER ///////////
-          Container(
-            child: Text(
-              'Ingredientes:',
-              style: TextStyle(color: Color.fromARGB(255, 255, 0, 0)),
-            ),
-          ),
-          Container(
-              margin: EdgeInsets.zero,
-              child: DropdownButton(
-                  hint: Text('Ingrediente'),
-                  value: _valueChoose,
-                  items: _listaMedidas.map((e) {
-                    return DropdownMenuItem(child: Text(e), value: e);
-                  }).toList(),
-                  onChanged: (e) {
-                    setState(() {
-                      _valueChoose = e;
-                    });
-                  })),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              children: <Container>[
-                Container(
-                    margin: EdgeInsets.only(right: 5),
-                    width: MediaQuery.of(context).size.width * 0.50,
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Cantidad',
-                      ),
-                    )),
-                Container(
-                    margin: EdgeInsets.zero,
-                    child: DropdownButton(
-                        hint: Text('Unidad de medida'),
-                        value: _valueChoose,
-                        items: _listaMedidas.map((e) {
-                          return DropdownMenuItem(child: Text(e), value: e);
-                        }).toList(),
-                        onChanged: (e) {
-                          setState(() {
-                            _valueChoose = e;
-                          });
-                        })),
-              ],
-            ),
-          ),
-          Container(
-              margin: EdgeInsets.only(left: 30, right: 30, top: 25),
-              height: 60,
-              child: SizedBox.expand(
-                  child: ElevatedButton(
-                      onPressed: () {},
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              Color.fromARGB(255, 222, 0, 16)),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(10)))),
-                      child: Text("Agregar Ingrediente",
-                          style: TextStyle(
-                              fontSize: 22,
-                              color: Colors.white,
-                              fontFamily: 'sans-serif-medium'))))),
-          Container(
-              margin: EdgeInsets.only(left: 30, right: 30, top: 25),
-              height: 60,
-              child: SizedBox.expand(
-                  child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              Color.fromARGB(255, 222, 0, 16)),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(10)))),
-                      child: Text("Agregar Platillo",
-                          style: TextStyle(
-                              fontSize: 22,
-                              color: Colors.white,
-                              fontFamily: 'sans-serif-medium')))))
-        ],
+        body: SingleChildScrollView(
+            child: Column(children: <Container>[
+      Container(
+          margin: EdgeInsets.only(
+              top: MediaQuery.of(context).size.height * 0.06,
+              left: 20,
+              bottom: 10),
+          child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Agregar Platillo',
+                style: TextStyle(
+                    fontSize: 30,
+                    fontFamily: 'sans-serif-medium',
+                    color: Color.fromARGB(255, 0, 0, 0)),
+              ))),
+      Container(
+          margin: EdgeInsets.only(left: 15, right: 15, bottom: 5),
+          child: TextField(
+              decoration: InputDecoration(hintText: 'Nombre del Platillo'))),
+      Container(
+        margin: EdgeInsets.symmetric(vertical: 15),
+        height: MediaQuery.of(context).size.height * 0.20,
+        child: _lista(),
       ),
-    );
+
+      ////////// PICKER ///////////
+      Container(
+        child: Text(
+          'Ingredientes:',
+          style: TextStyle(color: Color.fromARGB(255, 255, 0, 0)),
+        ),
+      ),
+      Container(
+          margin: EdgeInsets.zero,
+          child: DropdownButton(
+              hint: Text('Ingrediente'),
+              value: _valueChoose,
+              items: _listaMedidas.map((e) {
+                return DropdownMenuItem(child: Text(e), value: e);
+              }).toList(),
+              onChanged: (e) {
+                setState(() {
+                  _valueChoose = e;
+                });
+              })),
+      Container(
+        margin: EdgeInsets.symmetric(horizontal: 10),
+        child: Row(
+          children: <Container>[
+            Container(
+                margin: EdgeInsets.only(right: 5),
+                width: MediaQuery.of(context).size.width * 0.50,
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Cantidad',
+                  ),
+                )),
+            Container(
+                margin: EdgeInsets.zero,
+                child: DropdownButton(
+                    hint: Text('Unidad de medida'),
+                    value: _valueChoose,
+                    items: _listaMedidas.map((e) {
+                      return DropdownMenuItem(child: Text(e), value: e);
+                    }).toList(),
+                    onChanged: (e) {
+                      setState(() {
+                        _valueChoose = e;
+                      });
+                    })),
+          ],
+        ),
+      ),
+      Container(
+          margin: EdgeInsets.only(left: 30, right: 30, top: 25),
+          height: 60,
+          child: SizedBox.expand(
+              child: ElevatedButton(
+                  onPressed: () {},
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Color.fromARGB(255, 222, 0, 16)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)))),
+                  child: Text("Agregar Ingrediente",
+                      style: TextStyle(
+                          fontSize: 22,
+                          color: Colors.white,
+                          fontFamily: 'sans-serif-medium'))))),
+      Container(
+          margin: EdgeInsets.only(left: 30, right: 30, top: 25),
+          height: 60,
+          child: SizedBox.expand(
+              child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Color.fromARGB(255, 222, 0, 16)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)))),
+                  child: Text("Agregar Platillo",
+                      style: TextStyle(
+                          fontSize: 22,
+                          color: Colors.white,
+                          fontFamily: 'sans-serif-medium')))))
+    ])));
   }
 
   Widget _lista() {
