@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../components/user_form.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -24,20 +23,61 @@ class LoginPage extends StatelessWidget {
 
       /////////////// FORM ////////////////
       Container(
-          margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+        margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+        child: Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+                padding: EdgeInsets.only(bottom: 15),
+                child: Text('Ingresar',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'sans-serif-medium',
+                        color: Colors.black)))),
+      ),
+      Container(
+        margin: EdgeInsets.only(left: 20, right: 20, bottom: 15),
+        child: Column(
+          children: <Widget>[
+            Align(
+                alignment: Alignment.centerLeft,
+                child: Text('Usuario',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontFamily: 'sans-serif',
+                      color: Color.fromARGB(255, 222, 0, 16),
+                    ))),
+            TextField(
+                style: TextStyle(fontSize: 18),
+                decoration: InputDecoration(
+                    hintText: 'Tu usuario',
+                    contentPadding: EdgeInsets.only(bottom: -10))),
+          ],
+        ),
+      ),
+      Container(
+          margin: EdgeInsets.only(left: 20, right: 20, bottom: 50),
           child: Column(children: <Widget>[
             Align(
                 alignment: Alignment.centerLeft,
-                child: Padding(
-                    padding: EdgeInsets.only(bottom: 15),
-                    child: Text('Ingresar',
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'sans-serif-medium',
-                            color: Colors.black)))),
-            UserForm(),
+                child: Text(
+                  'Contraseña',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontFamily: 'sans-serif',
+                    color: Color.fromARGB(255, 222, 0, 16),
+                  ),
+                )),
+            TextField(
+              decoration: InputDecoration(
+                hintText: 'Contraseña',
+                contentPadding: EdgeInsets.only(bottom: -10),
+              ),
+              style: TextStyle(fontSize: 18),
+              obscureText: true,
+              enableSuggestions: false,
+              autocorrect: false,
+            )
           ])),
-
       ////////////// BUTTON //////////////
       Container(
           margin: EdgeInsets.only(left: 30, right: 30, bottom: 30),
