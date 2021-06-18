@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
+import '../services/autenticacion.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  createState() {
+    return LoginPageState();
+  }
+}
+
+class LoginPageState extends State<LoginPage> {
+  String _email = '', _password = '', _textError = '';
+
   @override
   build(context) {
     return Scaffold(
@@ -23,7 +33,7 @@ class LoginPage extends StatelessWidget {
 
       /////////////// FORM ////////////////
       Container(
-        margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+        margin: EdgeInsets.only(left: 20, right: 20, bottom: 5),
         child: Align(
             alignment: Alignment.centerLeft,
             child: Padding(
@@ -50,12 +60,17 @@ class LoginPage extends StatelessWidget {
                 style: TextStyle(fontSize: 18),
                 decoration: InputDecoration(
                     hintText: 'Tu usuario',
-                    contentPadding: EdgeInsets.only(bottom: -10))),
+                    contentPadding: EdgeInsets.only(bottom: -10)),
+                keyboardType: TextInputType.emailAddress,
+                onChanged: (value) {
+                  _email = value;
+                  print(_email);
+                }),
           ],
         ),
       ),
       Container(
-          margin: EdgeInsets.only(left: 20, right: 20, bottom: 50),
+          margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
           child: Column(children: <Widget>[
             Align(
                 alignment: Alignment.centerLeft,
@@ -76,16 +91,31 @@ class LoginPage extends StatelessWidget {
               obscureText: true,
               enableSuggestions: false,
               autocorrect: false,
+              onChanged: (value) {
+                _password = value;
+                print(_password);
+              },
             )
           ])),
+
+/////// ERROR TEXT /////////
+      Container(
+          margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+          height: 50,
+          child: Center(
+              child: Text(_textError,
+                  style: TextStyle(
+                      fontSize: 18, color: Color.fromARGB(255, 255, 0, 0))))),
+
       ////////////// BUTTON //////////////
       Container(
-          margin: EdgeInsets.only(left: 30, right: 30, bottom: 30),
+          margin: EdgeInsets.only(left: 30, right: 30, bottom: 15),
           height: 60,
           child: SizedBox.expand(
               child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamed('/menuPage');
+                    iniciarSesion(context);
+                    //Navigator.of(context).pushNamed('/menuPage');
                   },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
@@ -107,5 +137,19 @@ class LoginPage extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 22, color: Color.fromARGB(255, 222, 0, 16)))))
     ])));
+  }
+
+  void iniciarSesion(BuildContext context) async {
+    setState(() {
+      _textError = '';
+    });
+    final res = await Autenticacion.singIn(_email, _password);
+    if (res['status'] == 'ERROR') {
+      setState(() {
+        _textError = res['mensaje'];
+      });
+    } else {
+      Navigator.of(context).pushNamed('/menuPage', arguments: res['mensaje']);
+    }
   }
 }

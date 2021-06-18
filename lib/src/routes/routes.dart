@@ -20,7 +20,7 @@ class RouteGenerator {
       case '/registerPage':
         return MaterialPageRoute(builder: (_) => RegisterPage());
       case '/menuPage':
-        return MaterialPageRoute(builder: (_) => MenuDrawer());
+        return MaterialPageRoute(builder: (_) => MenuDrawer(args));
       case '/agregarIngPage':
         return MaterialPageRoute(builder: (_) => AgregarIngPage());
       case '/almacenPage':

@@ -4,13 +4,24 @@ import '../pages/almacen_page.dart';
 import '../pages/profile_page.dart';
 
 class MenuDrawer extends StatefulWidget {
+  String _user;
+
+  MenuDrawer(user) {
+    _user = user;
+  }
+
   @override
   createState() {
-    return MenuDrawerState();
+    return MenuDrawerState(_user);
   }
 }
 
 class MenuDrawerState extends State<MenuDrawer> {
+  String _user;
+  MenuDrawerState(user) {
+    _user = user;
+  }
+
   int _selectDrawerItem = 0;
 
   _getDrawerItemWidget(int pos) {
@@ -20,7 +31,7 @@ class MenuDrawerState extends State<MenuDrawer> {
       case 1:
         return AlmacenPage();
       case 2:
-        return ProfilePage();
+        return ProfilePage(_user);
     }
   }
 

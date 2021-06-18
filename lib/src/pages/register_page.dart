@@ -11,7 +11,6 @@ class RegisterPage extends StatefulWidget {
 
 class RegisterPageState extends State<RegisterPage> {
   String _email = '', _password = '', _textError = '';
-  bool _buttonPressed = false;
 
   @override
   build(context) {
@@ -94,10 +93,11 @@ class RegisterPageState extends State<RegisterPage> {
 
 /////// ERROR TEXT /////////
           Container(
-            margin: EdgeInsets.only(left: 20, right: 20, bottom: 25),
-            height: 50,
-            child: _buttonPressed ? mensaje() : null,
-          ),
+              margin: EdgeInsets.only(left: 20, right: 20, bottom: 25),
+              height: 50,
+              child: Text(_textError,
+                  style: TextStyle(
+                      fontSize: 18, color: Color.fromARGB(255, 255, 0, 0)))),
 
           ///////////// BUTTON /////////////
           Container(
@@ -106,27 +106,7 @@ class RegisterPageState extends State<RegisterPage> {
               child: SizedBox.expand(
                   child: ElevatedButton(
                       onPressed: () {
-                        setState(() {
-                          _textError = '';
-                          _buttonPressed = true;
-                        });
-                        /*try {
-                          final _respuesta =
-                              Autenticacion.signUp(_email, _password);
-                          print("RESPUESTA: " + _respuesta);
-                          if (_respuesta['status'] == 'ERROR') {
-                            setState(() {
-                              _textError = _respuesta['mensaje'];
-                            });
-                          } else {
-                            Navigator.of(context).pushNamed('/menuPage');
-                          }
-                        } catch (e) {
-                          print(e);
-                          setState(() {
-                            _textError = e.toString();
-                          });
-                        }*/
+                        registrarse(context);
                       },
                       style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(
@@ -165,27 +145,17 @@ class RegisterPageState extends State<RegisterPage> {
     ));
   }
 
-  FutureBuilder mensaje() {
-    return FutureBuilder(
-        future: Autenticacion.signUp(_email, _password),
-        initialData: [],
-        builder: (context, AsyncSnapshot<dynamic> snapshot) {
-          print('builder');
-          print(snapshot.data);
-
-          return Text(snapshot.data.toString(),
-              style: TextStyle(
-                  fontSize: 18, color: Color.fromARGB(255, 255, 0, 0)));
-          /*return Expanded(
-              child: Container(
-                  decoration: BoxDecoration(
-                      border: Border(
-                          top: BorderSide(
-                              width: 2.0,
-                              color: Color.fromARGB(255, 222, 0, 16)))),
-                  child: ListView(
-                    children: _listaImgs(snapshot.data, context),
-                  )));*/
-        });
+  void registrarse(BuildContext context) async {
+    setState(() {
+      _textError = '';
+    });
+    final res = await Autenticacion.signUp(_email, _password);
+    if (res['status'] == 'ERROR') {
+      setState(() {
+        _textError = res['mensaje'];
+      });
+    } else {
+      Navigator.of(context).pushNamed('/menuPage', arguments: res['mensaje']);
+    }
   }
 }

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
-class ProfilePage extends StatefulWidget {
-  @override
-  createState() {
-    return ProfilePageState();
-  }
-}
+class ProfilePage extends StatelessWidget {
+  String _user;
 
-class ProfilePageState extends State<ProfilePage> {
+  ProfilePage(user) {
+    _user = user;
+  }
+
   @override
   Widget build(BuildContext context) {
     return (Scaffold(
@@ -20,10 +19,9 @@ class ProfilePageState extends State<ProfilePage> {
                   'assets/user.png',
                   height: 200,
                 ),
-                Text('John Doe',
-                    style: TextStyle(fontSize: 38, color: Colors.black)),
+                Text(_user,
+                    style: TextStyle(fontSize: 28, color: Colors.black)),
               ])),
-          Container(),
           Container(
               margin:
                   EdgeInsets.only(left: 30, right: 30, top: 250, bottom: 30),
