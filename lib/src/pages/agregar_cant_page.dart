@@ -2,13 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class AgregarCantPage extends StatefulWidget {
+  var _ing;
+
+  AgregarCantPage(ing) {
+    _ing = ing;
+  }
+
   @override
   createState() {
-    return AgregarCantPageState();
+    return AgregarCantPageState(_ing);
   }
 }
 
 class AgregarCantPageState extends State<AgregarCantPage> {
+  String _id;
+
+  AgregarCantPageState(var ing) {
+    print('ASDSADASDASD');
+    print(ing);
+  }
+
   final List<String> _listaMedidas = [
     'Gramos',
     'Cucharadas (sólidos)',

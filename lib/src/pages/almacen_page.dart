@@ -1,59 +1,14 @@
 import 'package:flutter/material.dart';
+import '../services/database.dart';
 
-class AlmacenPage extends StatelessWidget {
-  Future<List> _getList() {
-    return Future.value([
-      {
-        'Nombre': 'Ingrediente 1',
-        'Cantidad': '20 kg',
-      },
-      {
-        'Nombre': 'Ingrediente 2',
-        'Cantidad': '20 kg',
-      },
-      {
-        'Nombre': 'Ingrediente 3',
-        'Cantidad': '200 g',
-      },
-      {
-        'Nombre': 'Ingrediente 4',
-        'Cantidad': '20 kg',
-      },
-      {
-        'Nombre': 'Ingrediente 5',
-        'Cantidad': '20 kg',
-      },
-      {
-        'Nombre': 'Ingrediente 6',
-        'Cantidad': '200 g',
-      },
-      {
-        'Nombre': 'Ingrediente 7',
-        'Cantidad': '20 kg',
-      },
-      {
-        'Nombre': 'Ingrediente 8',
-        'Cantidad': '20 kg',
-      },
-      {
-        'Nombre': 'Ingrediente 9',
-        'Cantidad': '200 g',
-      },
-      {
-        'Nombre': 'Ingrediente 10',
-        'Cantidad': '20 kg',
-      },
-      {
-        'Nombre': 'Ingrediente 11',
-        'Cantidad': '20 kg',
-      },
-      {
-        'Nombre': 'Ingrediente 12',
-        'Cantidad': '200 g',
-      }
-    ]);
+class AlmacenPage extends StatefulWidget {
+  @override
+  createState() {
+    return AlmacenPageState();
   }
+}
 
+class AlmacenPageState extends State<AlmacenPage> {
   @override
   Widget build(context) {
     return (Scaffold(
@@ -88,7 +43,7 @@ class AlmacenPage extends StatelessWidget {
   Widget _lista() {
     //FutureBuilder
     return FutureBuilder(
-      future: _getList(),
+      future: Database.getAllIngredientes(),
       initialData: [],
       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
         print('builder');
@@ -130,14 +85,15 @@ class AlmacenPage extends StatelessWidget {
                 backgroundColor: MaterialStateProperty.all<Color>(
                     Color.fromARGB(255, 255, 255, 255))),
             onPressed: () {
-              Navigator.of(context).pushNamed('/agregarCantPage');
+              Navigator.of(context)
+                  .pushNamed('/agregarCantPage', arguments: ingrediente);
             },
             child: Column(
               children: <Container>[
                 Container(
                     child: ListTile(
                   title: Text(
-                    ingrediente['Nombre'],
+                    ingrediente['ingrediente'],
                     style: TextStyle(fontSize: 30),
                   ),
                 )),
@@ -145,7 +101,7 @@ class AlmacenPage extends StatelessWidget {
                     margin: EdgeInsets.zero,
                     child: ListTile(
                         title: Text(
-                      ingrediente['Cantidad'],
+                      '${ingrediente['cantidad'].toStringAsFixed(ingrediente['cantidad'].truncateToDouble() == ingrediente['cantidad'] ? 0 : 1)} ${ingrediente['uMedida']}',
                       style: TextStyle(fontSize: 30),
                     )))
               ],

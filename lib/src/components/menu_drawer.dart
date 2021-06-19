@@ -27,9 +27,9 @@ class MenuDrawerState extends State<MenuDrawer> {
   _getDrawerItemWidget(int pos) {
     switch (pos) {
       case 0:
-        return PlatillosPage();
-      case 1:
         return AlmacenPage();
+      case 1:
+        return PlatillosPage();
       case 2:
         return ProfilePage(_user);
     }
@@ -55,14 +55,14 @@ class MenuDrawerState extends State<MenuDrawer> {
                 ),
               ),
               ListTile(
-                title: Text('Platillos'),
+                title: Text('Almacén'),
                 onTap: () {
                   _onSelectItem(0);
                   Navigator.pop(context);
                 },
               ),
               ListTile(
-                title: Text('Almacén'),
+                title: Text('Platillos'),
                 onTap: () {
                   _onSelectItem(1);
                   Navigator.pop(context);

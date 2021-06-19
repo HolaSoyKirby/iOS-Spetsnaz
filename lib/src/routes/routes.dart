@@ -5,7 +5,6 @@ import '../pages/login_page.dart';
 import '../pages/register_page.dart';
 import '../components/menu_drawer.dart';
 import '../pages/agregar_ing_page.dart';
-import '../pages/almacen_page.dart';
 import '../pages/agregar_plat_page.dart';
 import '../pages/ingredientes_platillo_page.dart';
 import '../pages/agregar_cant_page.dart';
@@ -23,14 +22,12 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => MenuDrawer(args));
       case '/agregarIngPage':
         return MaterialPageRoute(builder: (_) => AgregarIngPage());
-      case '/almacenPage':
-        return MaterialPageRoute(builder: (_) => AlmacenPage());
       case '/agregarPlatPage':
         return MaterialPageRoute(builder: (_) => AgregarPlatPage());
       case '/ingredientesPlatilloPage':
         return MaterialPageRoute(builder: (_) => IngredientesPlatilloPage());
       case '/agregarCantPage':
-        return MaterialPageRoute(builder: (_) => AgregarCantPage());
+        return MaterialPageRoute(builder: (_) => AgregarCantPage(args));
       default:
         return MaterialPageRoute(builder: (_) => LoginPage());
     }
