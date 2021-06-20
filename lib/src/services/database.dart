@@ -37,10 +37,48 @@ class Database {
       ingredientes.add(ingrediente);
     }
 
+    ingredientes.sort((a, b) => a['ingrediente'].compareTo(b['ingrediente']));
+
     return Future.value(ingredientes);
   }
 
   static getIngrediente(String id) async {
     final String _url = '$_baseUrl$id';
+    final response = await http.get(_url);
+    final responseData = await json.decode(response.body);
+
+    final ingrediente = {
+      'id': responseData['name'],
+      'ingrediente': responseData['fields']['ingrediente']['stringValue'],
+      'cantidad': int.parse(responseData['fields']['cantidad']['integerValue']),
+      'uMedida': responseData['fields']['uMedida']['stringValue']
+    };
+
+    return ingrediente;
+  }
+
+  static updateIngrediente(String id, double cantidad) async {
+    final _ing = await getIngrediente(id);
+
+    final int _cantFinal = (_ing['cantidad'] + cantidad).round();
+
+    print("SIUUU");
+    print(_cantFinal);
+
+    final String _url = '$_baseUrl$id?updateMask.fieldPaths=cantidad';
+    try {
+      final response = await http.patch(_url,
+          body: json.encode({
+            'fields': {
+              'cantidad': {'integerValue': _cantFinal}
+            }
+          }));
+
+      final responseData = await json.decode(response.body);
+      return {'status': 'OK', 'mensaje': responseData.toString()};
+    } catch (e) {
+      print("OH SNAP");
+      return {'status': 'ERROR', 'mensaje': e.toString()};
+    }
   }
 }

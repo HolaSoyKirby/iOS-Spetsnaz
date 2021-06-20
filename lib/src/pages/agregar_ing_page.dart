@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class AgregarIngPage extends StatefulWidget {
   @override
@@ -9,14 +8,13 @@ class AgregarIngPage extends StatefulWidget {
 }
 
 class AgregarIngPageState extends State<AgregarIngPage> {
+  String _nombreIng = '', _textError = 'Error xdxdxddxd';
+  double _cant = 0;
+
   final List<String> _listaMedidas = [
     'Gramos',
-    'Cucharadas (sólidos)',
-    'Tazas (sólidos)',
     'Kilogramos',
     'Mililitros',
-    'Cucharadas (líquidos)',
-    'Tazas (líquidos)',
     'Litros'
   ];
 
@@ -55,7 +53,11 @@ class AgregarIngPageState extends State<AgregarIngPage> {
                             style: TextStyle(fontSize: 18),
                             decoration: InputDecoration(
                                 hintText: 'Ingrediente',
-                                contentPadding: EdgeInsets.only(bottom: -10))),
+                                contentPadding: EdgeInsets.only(bottom: -10)),
+                            onChanged: (value) {
+                              _nombreIng = value;
+                              print(_nombreIng);
+                            }),
                       ],
                     ),
                   ),
@@ -71,14 +73,21 @@ class AgregarIngPageState extends State<AgregarIngPage> {
                                     fontFamily: 'sans-serif',
                                     color: Color.fromARGB(255, 222, 0, 16)))),
                         TextField(
-                          decoration: new InputDecoration(
-                              hintText: 'Cantidad',
-                              contentPadding: EdgeInsets.only(bottom: -10)),
-                          style: TextStyle(fontSize: 18),
-                          obscureText: true,
-                          enableSuggestions: false,
-                          autocorrect: false,
-                        )
+                            decoration: new InputDecoration(
+                                hintText: 'Cantidad',
+                                contentPadding: EdgeInsets.only(bottom: -10)),
+                            style: TextStyle(fontSize: 18),
+                            obscureText: true,
+                            enableSuggestions: false,
+                            autocorrect: false,
+                            onChanged: (value) {
+                              if (double.tryParse(value) != null) {
+                                _cant = double.parse(value);
+                              } else {
+                                _cant = 0;
+                              }
+                              print(_cant);
+                            })
                       ])),
 
                   Container(
@@ -94,7 +103,7 @@ class AgregarIngPageState extends State<AgregarIngPage> {
                   ),
                   ////////// PICKER ///////////
                   Container(
-                      margin: EdgeInsets.only(bottom: 80),
+                      margin: EdgeInsets.only(bottom: 40),
                       child: DropdownButton(
                           hint: Text('Unidad de medida'),
                           value: _valueChoose,
@@ -106,7 +115,15 @@ class AgregarIngPageState extends State<AgregarIngPage> {
                               _valueChoose = e;
                             });
                           })),
-
+                  /////// ERROR TEXT /////////
+                  Container(
+                      margin: EdgeInsets.only(left: 20, right: 20, bottom: 55),
+                      height: 50,
+                      child: Center(
+                          child: Text(_textError,
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: Color.fromARGB(255, 255, 0, 0))))),
                   /////////////BUTTON////////////
                   Container(
                       margin: EdgeInsets.only(left: 30, right: 30, bottom: 30),

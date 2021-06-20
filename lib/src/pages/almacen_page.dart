@@ -86,7 +86,10 @@ class AlmacenPageState extends State<AlmacenPage> {
                     Color.fromARGB(255, 255, 255, 255))),
             onPressed: () {
               Navigator.of(context)
-                  .pushNamed('/agregarCantPage', arguments: ingrediente);
+                  .pushNamed('/agregarCantPage', arguments: ingrediente)
+                  .then((_) {
+                setState(() {});
+              });
             },
             child: Column(
               children: <Container>[
@@ -101,7 +104,7 @@ class AlmacenPageState extends State<AlmacenPage> {
                     margin: EdgeInsets.zero,
                     child: ListTile(
                         title: Text(
-                      '${ingrediente['cantidad'].toStringAsFixed(ingrediente['cantidad'].truncateToDouble() == ingrediente['cantidad'] ? 0 : 1)} ${ingrediente['uMedida']}',
+                      '${ingrediente['cantidad'].toString().replaceAll(RegExp(r"([.]*0)(?!.*\d)"), "")} ${ingrediente['uMedida']}',
                       style: TextStyle(fontSize: 30),
                     )))
               ],

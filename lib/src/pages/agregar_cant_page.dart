@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import '../services/database.dart';
 
 class AgregarCantPage extends StatefulWidget {
   var _ing;
@@ -15,25 +16,60 @@ class AgregarCantPage extends StatefulWidget {
 }
 
 class AgregarCantPageState extends State<AgregarCantPage> {
-  String _id;
+  String _id, _nombreIng, _cantRestante, _textError = 'Error';
+
+  List<String> _listaMedidas;
+  String _valueChoose;
+  double _cantidad = 0;
 
   AgregarCantPageState(var ing) {
     print('ASDSADASDASD');
     print(ing);
+    _id = ing['id'];
+    _nombreIng = ing['ingrediente'];
+    _cantRestante =
+        '${ing['cantidad'].toStringAsFixed(ing['cantidad'].truncateToDouble() == ing['cantidad'] ? 0 : 1)} ${ing['uMedida']} restante';
+
+    if (ing['uMedida'] == 'g' || ing['uMedida'] == 'Kg') {
+      _listaMedidas = ['Gramos', 'Kilogramos'];
+    } else {
+      _listaMedidas = ['Mililitros', 'Litros'];
+    }
   }
 
-  final List<String> _listaMedidas = [
-    'Gramos',
-    'Cucharadas (sólidos)',
-    'Tazas (sólidos)',
-    'Kilogramos',
-    'Mililitros',
-    'Cucharadas (líquidos)',
-    'Tazas (líquidos)',
-    'Litros'
-  ];
+  updateIngrediente() async {
+    if (_cantidad <= 0) {
+      setState(() {
+        _textError = 'Ingrese una cantidad válida';
+      });
+      return;
+    }
 
-  String _valueChoose;
+    if (_valueChoose == null) {
+      setState(() {
+        _textError = 'Ingrese una unidad de medida';
+      });
+      return;
+    }
+
+    double _cantFinal = _cantidad;
+    if (_valueChoose == 'Kilogramos' || _valueChoose == 'Litros') {
+      _cantFinal *= 1000;
+    }
+
+    print('CANT FINAL');
+    print(_cantFinal);
+    final res = await Database.updateIngrediente(_id, _cantFinal);
+    if (res['status'] == 'OK') {
+      Navigator.of(context).pop(() {
+        setState(() {});
+      });
+    } else {
+      setState(() {
+        _textError = res['mensaje'];
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +78,7 @@ class AgregarCantPageState extends State<AgregarCantPage> {
             child: Column(children: <Container>[
       Container(
           margin: EdgeInsets.only(top: 100, bottom: 20),
-          child: Text('Nombre Ingrediente',
+          child: Text(_nombreIng,
               style: TextStyle(
                   fontSize: 30,
                   fontFamily: 'sans-serif-medium',
@@ -50,7 +86,7 @@ class AgregarCantPageState extends State<AgregarCantPage> {
       Container(
           height: MediaQuery.of(context).size.height * 0.20,
           child: Center(
-              child: Text('5 kg restante',
+              child: Text(_cantRestante,
                   style: TextStyle(fontSize: 25, color: Colors.black)))),
       Container(
           margin: EdgeInsets.only(left: 15),
@@ -58,16 +94,23 @@ class AgregarCantPageState extends State<AgregarCantPage> {
               alignment: Alignment.centerLeft,
               child: Text(
                 'Agregar Cantidad',
-                style: TextStyle(
-                    fontSize: 18, color: Color.fromARGB(255, 255, 0, 0)),
+                style: TextStyle(color: Color.fromARGB(255, 255, 0, 0)),
               ))),
       Container(
           margin: EdgeInsets.symmetric(horizontal: 15),
           child: TextField(
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(hintText: 'Cantidad'))),
+              decoration: InputDecoration(hintText: 'Cantidad'),
+              onChanged: (value) {
+                if (double.tryParse(value) != null) {
+                  _cantidad = double.parse(value);
+                } else {
+                  _cantidad = 0;
+                }
+                print(_cantidad);
+              })),
       Container(
-          margin: EdgeInsets.only(top: 10),
+          margin: EdgeInsets.only(top: 30),
           child: DropdownButton(
               hint: Text('Unidad de medida', style: TextStyle(fontSize: 18)),
               value: _valueChoose,
@@ -78,14 +121,23 @@ class AgregarCantPageState extends State<AgregarCantPage> {
                 setState(() {
                   _valueChoose = e;
                 });
+                print(_valueChoose);
               })),
+      /////// ERROR TEXT /////////
       Container(
-          margin: EdgeInsets.only(top: 70, left: 30, right: 30, bottom: 30),
+          margin: EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 20),
+          height: 50,
+          child: Center(
+              child: Text(_textError,
+                  style: TextStyle(
+                      fontSize: 18, color: Color.fromARGB(255, 255, 0, 0))))),
+      Container(
+          margin: EdgeInsets.only(top: 40, left: 30, right: 30, bottom: 30),
           height: 60,
           child: SizedBox.expand(
               child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    updateIngrediente();
                   },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
