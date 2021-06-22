@@ -1,4 +1,3 @@
-import 'package:ProyectoSpetsnaz/src/pages/ingredientes_platillo_page.dart';
 import 'package:ProyectoSpetsnaz/src/services/database.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +9,7 @@ class AgregarPlatPage extends StatefulWidget {
 }
 
 class AgregarPlatPageState extends State<AgregarPlatPage> {
-  String _textError = 'Error xdxdxdxdxdd';
+  String _textError = '';
 
   String _nombrePlatillo = '';
   var _ingredientesPlatillo = [];
