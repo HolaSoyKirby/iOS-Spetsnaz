@@ -110,7 +110,7 @@ class AlmacenPageState extends State<AlmacenPage> {
                     margin: EdgeInsets.zero,
                     child: ListTile(
                         title: Text(
-                      '${ingrediente['cantidad'].toString().replaceAll(RegExp(r"([.]*0)(?!.*\d)"), "")} ${ingrediente['uMedida']}',
+                      '${ingrediente['cantidad'].toString()} ${ingrediente['uMedida']}',
                       style: TextStyle(fontSize: 30),
                     )))
               ],

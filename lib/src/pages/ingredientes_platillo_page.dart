@@ -40,7 +40,7 @@ class IngredientesPlatilloPageState extends State<IngredientesPlatilloPage> {
       }
 
       final _ing = {
-        'id': getIng['IdIng'],
+        'id': getIng['id'],
         'cantActual': getIng['cantidad'],
         'cantProcesada': _cantProcesada
       };
@@ -50,6 +50,31 @@ class IngredientesPlatilloPageState extends State<IngredientesPlatilloPage> {
 
     print('ALMACEN');
     print(_almacen);
+
+    bool _showAlert = false;
+    for (final ing in _almacen) {
+      var _cantFinal = ing['cantActual'] - ing['cantProcesada'];
+
+      if (_cantFinal < 0) {
+        _cantFinal = 0;
+        _showAlert = true;
+      }
+
+      final _ingFinal = {'id': ing['id'], 'cantidad': _cantFinal};
+      _ingsActualizados.add(_ingFinal);
+    }
+
+    print('ACTUALIZADO');
+    print(_ingsActualizados);
+    if (_showAlert) {
+      await showAlert(_ingsActualizados);
+    } else {
+      await Database.prepararPlatillo(_ingsActualizados);
+    }
+
+    Navigator.of(context).pop(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -87,7 +112,6 @@ class IngredientesPlatilloPageState extends State<IngredientesPlatilloPage> {
                 child: ElevatedButton(
                     onPressed: () {
                       prepararPlatillo();
-                      //Navigator.of(context).pop();
                     },
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
@@ -132,5 +156,43 @@ class IngredientesPlatilloPageState extends State<IngredientesPlatilloPage> {
             style: TextStyle(fontSize: 20),
           ),
         ));
+  }
+
+  void showAlert(final platillo) async {
+    await showDialog(
+        context: context,
+        barrierDismissible:
+            false, //indica si puedes cerrar la alerta picando fuera de ella
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)),
+            title: Text('Alerta'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                    'No tienes los suficientes ingredientes para preparar $_nombrePlatillo, ¿desea prepararlo de todas formas?')
+              ],
+            ),
+            actions: <TextButton>[
+              TextButton(
+                child: Text('NO'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: Text('SI'),
+                onPressed: () async {
+                  await Database.prepararPlatillo(platillo);
+                  Navigator.of(context).pop(() {
+                    setState(() {});
+                  });
+                },
+              )
+            ],
+          );
+        });
   }
 }

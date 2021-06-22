@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   build(context) {
     return MaterialApp(
-        initialRoute: '/menuPage',
+        initialRoute: '/',
         onGenerateRoute: RouteGenerator.generateRoute,
         debugShowCheckedModeBanner: false);
   }

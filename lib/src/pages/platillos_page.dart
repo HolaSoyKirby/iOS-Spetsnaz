@@ -9,31 +9,6 @@ class PlatillosPage extends StatefulWidget {
 }
 
 class PlatillosPageState extends State<PlatillosPage> {
-  Future<List> _getList() {
-    return Future.value([
-      {'Nombre': 'Platillo 1'},
-      {'Nombre': 'Platillo 2'},
-      {'Nombre': 'Platillo 3'},
-      {'Nombre': 'Platillo 4'},
-      {'Nombre': 'Platillo 5'},
-      {'Nombre': 'Platillo 6'},
-      {'Nombre': 'Platillo 7'},
-      {'Nombre': 'Platillo 8'},
-      {'Nombre': 'Platillo 9'},
-      {'Nombre': 'Platillo 10'},
-      {'Nombre': 'Platillo 11'},
-      {'Nombre': 'Platillo 12'},
-      {'Nombre': 'Platillo 13'},
-      {'Nombre': 'Platillo 14'},
-      {'Nombre': 'Platillo 15'},
-      {'Nombre': 'Platillo 16'},
-      {'Nombre': 'Platillo 17'},
-      {'Nombre': 'Platillo 18'},
-      {'Nombre': 'Platillo 19'},
-      {'Nombre': 'Platillo 20'}
-    ]);
-  }
-
   @override
   Widget build(context) {
     return (Scaffold(
@@ -117,8 +92,12 @@ class PlatillosPageState extends State<PlatillosPage> {
                     backgroundColor: MaterialStateProperty.all<Color>(
                         Color.fromARGB(255, 255, 255, 255))),
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/ingredientesPlatilloPage',
-                      arguments: platillo);
+                  Navigator.of(context)
+                      .pushNamed('/ingredientesPlatilloPage',
+                          arguments: platillo)
+                      .then((_) {
+                    setState(() {});
+                  });
                 },
                 child: Container(
                     margin: EdgeInsets.symmetric(vertical: 20),

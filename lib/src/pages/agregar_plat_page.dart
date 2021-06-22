@@ -231,7 +231,7 @@ class AgregarPlatPageState extends State<AgregarPlatPage> {
                               Container(
                                   margin: EdgeInsets.zero,
                                   child: Text(
-                                    '${_ingredientesPlatillo[index]['cantidad'].toString().replaceAll(RegExp(r"([.]*0)(?!.*\d)"), "")} ${_ingredientesPlatillo[index]['uMedida']}',
+                                    '${_ingredientesPlatillo[index]['cantidad'].toString()} ${_ingredientesPlatillo[index]['uMedida']}',
                                     style: TextStyle(fontSize: 30),
                                   ))
                             ]))));

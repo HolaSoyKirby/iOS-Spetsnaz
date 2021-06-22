@@ -180,4 +180,15 @@ class Database {
       return {'status': 'ERROR', 'mensaje': e.toString()};
     }
   }
+
+  static prepararPlatillo(final platillo) async {
+    print('INGREDIENTES FINALES');
+    try {
+      for (final ing in platillo) {
+        await updateIngrediente(ing['id'], ing['cantidad']);
+      }
+    } catch (e) {
+      return e;
+    }
+  }
 }
