@@ -25,7 +25,8 @@ class RouteGenerator {
       case '/agregarPlatPage':
         return MaterialPageRoute(builder: (_) => AgregarPlatPage());
       case '/ingredientesPlatilloPage':
-        return MaterialPageRoute(builder: (_) => IngredientesPlatilloPage());
+        return MaterialPageRoute(
+            builder: (_) => IngredientesPlatilloPage(args));
       case '/agregarCantPage':
         return MaterialPageRoute(builder: (_) => AgregarCantPage(args));
       default:

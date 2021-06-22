@@ -1,6 +1,14 @@
+import 'package:ProyectoSpetsnaz/src/services/database.dart';
 import 'package:flutter/material.dart';
 
-class PlatillosPage extends StatelessWidget {
+class PlatillosPage extends StatefulWidget {
+  @override
+  createState() {
+    return PlatillosPageState();
+  }
+}
+
+class PlatillosPageState extends State<PlatillosPage> {
   Future<List> _getList() {
     return Future.value([
       {'Nombre': 'Platillo 1'},
@@ -52,7 +60,11 @@ class PlatillosPage extends StatelessWidget {
                   backgroundColor: Color.fromARGB(255, 222, 0, 16),
                   child: Icon(Icons.add, size: 30),
                   onPressed: () {
-                    Navigator.of(context).pushNamed('/agregarPlatPage');
+                    Navigator.of(context)
+                        .pushNamed('/agregarPlatPage')
+                        .then((_) {
+                      setState(() {});
+                    });
                   }),
             ))));
   }
@@ -60,21 +72,24 @@ class PlatillosPage extends StatelessWidget {
   Widget _lista() {
     //FutureBuilder
     return FutureBuilder(
-      future: _getList(),
+      future: Database.getAllPlatillos(),
       initialData: [],
       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-        print('builder');
-        print(snapshot.data);
-        return Expanded(
-            child: Container(
-                decoration: BoxDecoration(
-                    border: Border(
-                        top: BorderSide(
-                            width: 2.0,
-                            color: Color.fromARGB(255, 222, 0, 16)))),
-                child: ListView(
-                  children: _listaImgs(snapshot.data, context),
-                )));
+        if (snapshot.data != null) {
+          return Expanded(
+              child: Container(
+                  decoration: BoxDecoration(
+                      border: Border(
+                          top: BorderSide(
+                              width: 2.0,
+                              color: Color.fromARGB(255, 222, 0, 16)))),
+                  child: ListView(
+                    children: _listaImgs(snapshot.data, context),
+                  )));
+        } else {
+          return Expanded(
+              child: Center(child: Text('No hay platillos todavía')));
+        }
       },
     );
   }
@@ -83,13 +98,12 @@ class PlatillosPage extends StatelessWidget {
     final List<Widget> opciones = [];
 
     for (int i = 0; i < data.length; i++) {
-      print(data[i]);
       opciones.add(_cardt1(data[i], context));
     }
     return opciones;
   }
 
-  Widget _cardt1(var ingrediente, BuildContext context) {
+  Widget _cardt1(var platillo, BuildContext context) {
     return Column(
       children: <Container>[
         Container(
@@ -103,13 +117,14 @@ class PlatillosPage extends StatelessWidget {
                     backgroundColor: MaterialStateProperty.all<Color>(
                         Color.fromARGB(255, 255, 255, 255))),
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/ingredientesPlatilloPage');
+                  Navigator.of(context).pushNamed('/ingredientesPlatilloPage',
+                      arguments: platillo);
                 },
                 child: Container(
                     margin: EdgeInsets.symmetric(vertical: 20),
                     child: ListTile(
                       title: Text(
-                        ingrediente['Nombre'],
+                        platillo['nombreP'],
                         style: TextStyle(fontSize: 30),
                       ),
                     ))))

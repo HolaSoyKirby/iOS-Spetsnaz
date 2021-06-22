@@ -1,57 +1,55 @@
+import 'package:ProyectoSpetsnaz/src/services/database.dart';
 import 'package:flutter/material.dart';
 
-class IngredientesPlatilloPage extends StatelessWidget {
-  Future<List> _getList() {
-    return Future.value([
-      {
-        'Nombre': 'Ingrediente 1',
-        'Cantidad': '20 kg',
-      },
-      {
-        'Nombre': 'Ingrediente 2',
-        'Cantidad': '20 kg',
-      },
-      {
-        'Nombre': 'Ingrediente 3',
-        'Cantidad': '200 g',
-      },
-      {
-        'Nombre': 'Ingrediente 4',
-        'Cantidad': '20 kg',
-      },
-      {
-        'Nombre': 'Ingrediente 5',
-        'Cantidad': '20 kg',
-      },
-      {
-        'Nombre': 'Ingrediente 6',
-        'Cantidad': '200 g',
-      },
-      {
-        'Nombre': 'Ingrediente 7',
-        'Cantidad': '20 kg',
-      },
-      {
-        'Nombre': 'Ingrediente 8',
-        'Cantidad': '20 kg',
-      },
-      {
-        'Nombre': 'Ingrediente 9',
-        'Cantidad': '200 g',
-      },
-      {
-        'Nombre': 'Ingrediente 10',
-        'Cantidad': '20 kg',
-      },
-      {
-        'Nombre': 'Ingrediente 11',
-        'Cantidad': '20 kg',
-      },
-      {
-        'Nombre': 'Ingrediente 12',
-        'Cantidad': '200 g',
+class IngredientesPlatilloPage extends StatefulWidget {
+  var _plat;
+  IngredientesPlatilloPage(var plat) {
+    _plat = plat;
+  }
+
+  @override
+  createState() {
+    return IngredientesPlatilloPageState(_plat);
+  }
+}
+
+class IngredientesPlatilloPageState extends State<IngredientesPlatilloPage> {
+  var _plat;
+  String _nombrePlatillo;
+
+  IngredientesPlatilloPageState(var plat) {
+    _plat = plat;
+    print(_plat);
+    _nombrePlatillo = _plat['nombreP'];
+  }
+
+  void prepararPlatillo() async {
+    var _almacen = [];
+    var _ingsActualizados = [];
+
+    for (final ing in _plat['ingredientes']) {
+      final getIng = await Database.getIngrediente(ing['IdIng']);
+      var _cantProcesada = ing['cantidad'];
+
+      if (ing['uMedida'] == 'c') {
+        _cantProcesada *= 15;
+      } else if (ing['uMedida'] == 't') {
+        _cantProcesada *= 250;
+      } else if (ing['uMedida'] == 'Kg' || ing['uMedida'] == 'L') {
+        _cantProcesada *= 1000;
       }
-    ]);
+
+      final _ing = {
+        'id': getIng['IdIng'],
+        'cantActual': getIng['cantidad'],
+        'cantProcesada': _cantProcesada
+      };
+
+      _almacen.add(_ing);
+    }
+
+    print('ALMACEN');
+    print(_almacen);
   }
 
   @override
@@ -64,7 +62,7 @@ class IngredientesPlatilloPage extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.15,
             child: Center(
                 child: Text(
-              'Nombre Platillo',
+              _nombrePlatillo,
               style: TextStyle(
                   fontSize: 30,
                   fontFamily: 'sans-serif-medium',
@@ -88,7 +86,8 @@ class IngredientesPlatilloPage extends StatelessWidget {
             child: SizedBox.expand(
                 child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      prepararPlatillo();
+                      //Navigator.of(context).pop();
                     },
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
@@ -107,29 +106,19 @@ class IngredientesPlatilloPage extends StatelessWidget {
   }
 
   Widget _lista() {
-    //FutureBuilder
-    return FutureBuilder(
-      future: _getList(),
-      initialData: [],
-      builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-        print('builder');
-        print(snapshot.data);
-        return Expanded(
-            child: Container(
-                margin: EdgeInsets.zero,
-                child: ListView(
-                  children: _listaImgs(snapshot.data, context),
-                )));
-      },
-    );
+    return Expanded(
+        child: Container(
+            margin: EdgeInsets.zero,
+            child: ListView(
+              children: _listaImgs(),
+            )));
   }
 
-  List<Widget> _listaImgs(List<dynamic> data, BuildContext context) {
+  List<Widget> _listaImgs() {
     final List<Widget> opciones = [];
 
-    for (int i = 0; i < data.length; i++) {
-      print(data[i]);
-      opciones.add(_cardt1(data[i]));
+    for (final ing in _plat['ingredientes']) {
+      opciones.add(_cardt1(ing));
     }
     return opciones;
   }
@@ -139,7 +128,7 @@ class IngredientesPlatilloPage extends StatelessWidget {
         margin: EdgeInsets.zero,
         child: ListTile(
           title: Text(
-            '- ${ingrediente['Cantidad']} ${ingrediente['Nombre']}',
+            '- ${ingrediente['cantidad']} ${ingrediente['uMedida']} ${ingrediente['nombreIng']}',
             style: TextStyle(fontSize: 20),
           ),
         ));

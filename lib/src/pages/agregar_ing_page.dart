@@ -1,3 +1,4 @@
+import 'package:ProyectoSpetsnaz/src/services/database.dart';
 import 'package:flutter/material.dart';
 
 class AgregarIngPage extends StatefulWidget {
@@ -8,7 +9,7 @@ class AgregarIngPage extends StatefulWidget {
 }
 
 class AgregarIngPageState extends State<AgregarIngPage> {
-  String _nombreIng = '', _textError = 'Error xdxdxddxd';
+  String _nombreIng = '', _textError = '';
   double _cant = 0;
 
   final List<String> _listaMedidas = [
@@ -19,6 +20,58 @@ class AgregarIngPageState extends State<AgregarIngPage> {
   ];
 
   String _valueChoose;
+
+  crearIngrediente() async {
+    setState(() {
+      _textError = '';
+    });
+
+    if (_nombreIng == '') {
+      setState(() {
+        _textError = 'Ingrese el nombre del ingrediente';
+      });
+      return;
+    }
+
+    if (_cant <= 0) {
+      setState(() {
+        _textError = 'Ingrese una cantidad válida';
+      });
+      return;
+    }
+
+    if (_valueChoose == null) {
+      setState(() {
+        _textError = 'Ingrese una unidad de medida';
+      });
+      return;
+    }
+
+    String _uMedida;
+    double _cantFinal = _cant;
+
+    if (_valueChoose == 'Kilogramos' || _valueChoose == 'Litros') {
+      _cantFinal *= 1000;
+    }
+
+    if (_valueChoose == 'Kilogramos' || _valueChoose == 'Gramos') {
+      _uMedida = 'g';
+    } else {
+      _uMedida = 'ml';
+    }
+
+    final res =
+        await Database.postIngrediente(_nombreIng, _cantFinal, _uMedida);
+    if (res['status'] == 'OK') {
+      Navigator.of(context).pop(() {
+        setState(() {});
+      });
+    } else {
+      setState(() {
+        _textError = res['mensaje'];
+      });
+    }
+  }
 
   @override
   Widget build(context) {
@@ -77,7 +130,7 @@ class AgregarIngPageState extends State<AgregarIngPage> {
                                 hintText: 'Cantidad',
                                 contentPadding: EdgeInsets.only(bottom: -10)),
                             style: TextStyle(fontSize: 18),
-                            obscureText: true,
+                            keyboardType: TextInputType.number,
                             enableSuggestions: false,
                             autocorrect: false,
                             onChanged: (value) {
@@ -114,6 +167,7 @@ class AgregarIngPageState extends State<AgregarIngPage> {
                             setState(() {
                               _valueChoose = e;
                             });
+                            print(_valueChoose);
                           })),
                   /////// ERROR TEXT /////////
                   Container(
@@ -131,7 +185,8 @@ class AgregarIngPageState extends State<AgregarIngPage> {
                       child: SizedBox.expand(
                           child: ElevatedButton(
                               onPressed: () {
-                                Navigator.of(context).pop();
+                                //Navigator.of(context).pop();
+                                crearIngrediente();
                               },
                               style: ButtonStyle(
                                   backgroundColor:

@@ -16,7 +16,7 @@ class AgregarCantPage extends StatefulWidget {
 }
 
 class AgregarCantPageState extends State<AgregarCantPage> {
-  String _id, _nombreIng, _cantRestante, _textError = 'Error';
+  String _id, _nombreIng, _cantRestante, _textError = '';
 
   List<String> _listaMedidas;
   String _valueChoose;
@@ -38,6 +38,10 @@ class AgregarCantPageState extends State<AgregarCantPage> {
   }
 
   updateIngrediente() async {
+    setState(() {
+      _textError = '';
+    });
+
     if (_cantidad <= 0) {
       setState(() {
         _textError = 'Ingrese una cantidad válida';
@@ -59,14 +63,22 @@ class AgregarCantPageState extends State<AgregarCantPage> {
 
     print('CANT FINAL');
     print(_cantFinal);
-    final res = await Database.updateIngrediente(_id, _cantFinal);
-    if (res['status'] == 'OK') {
-      Navigator.of(context).pop(() {
-        setState(() {});
-      });
-    } else {
+    try {
+      final _ing = await Database.getIngrediente(_id);
+      final int _cantFinalFinal = (_ing['cantidad'] + _cantFinal).round();
+      final res = await Database.updateIngrediente(_id, _cantFinalFinal);
+      if (res['status'] == 'OK') {
+        Navigator.of(context).pop(() {
+          setState(() {});
+        });
+      } else {
+        setState(() {
+          _textError = res['mensaje'];
+        });
+      }
+    } catch (e) {
       setState(() {
-        _textError = res['mensaje'];
+        _textError = e.toString();
       });
     }
   }

@@ -31,36 +31,42 @@ class AlmacenPageState extends State<AlmacenPage> {
             height: 70.0,
             width: 70.0,
             child: FittedBox(
-              child: FloatingActionButton(
-                  backgroundColor: Color.fromARGB(255, 222, 0, 16),
-                  child: Icon(Icons.add, size: 30),
-                  onPressed: () {
-                    Navigator.of(context).pushNamed('/agregarIngPage');
-                  }),
-            ))));
+                child: FloatingActionButton(
+              backgroundColor: Color.fromARGB(255, 222, 0, 16),
+              child: Icon(Icons.add, size: 30),
+              onPressed: () {
+                Navigator.of(context).pushNamed('/agregarIngPage').then((_) {
+                  setState(() {});
+                });
+              },
+            )))));
   }
 
   Widget _lista() {
     //FutureBuilder
     return FutureBuilder(
-      future: Database.getAllIngredientes(),
-      initialData: [],
-      builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-        print('builder');
-        print(snapshot.data);
-        return Expanded(
-            child: Container(
-                margin: EdgeInsets.zero,
-                decoration: BoxDecoration(
-                    border: Border(
-                        top: BorderSide(
-                            width: 2.0,
-                            color: Color.fromARGB(255, 222, 0, 16)))),
-                child: ListView(
-                  children: _listaImgs(snapshot.data, context),
-                )));
-      },
-    );
+        future: Database.getAllIngredientes(),
+        initialData: [],
+        builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+          print('builder');
+          print(snapshot.data);
+          if (snapshot.data != null) {
+            return Expanded(
+                child: Container(
+                    margin: EdgeInsets.zero,
+                    decoration: BoxDecoration(
+                        border: Border(
+                            top: BorderSide(
+                                width: 2.0,
+                                color: Color.fromARGB(255, 222, 0, 16)))),
+                    child: ListView(
+                      children: _listaImgs(snapshot.data, context),
+                    )));
+          } else {
+            return Expanded(
+                child: Center(child: Text('No hay ingredientes todavía')));
+          }
+        });
   }
 
   List<Widget> _listaImgs(List<dynamic> data, BuildContext context) {
